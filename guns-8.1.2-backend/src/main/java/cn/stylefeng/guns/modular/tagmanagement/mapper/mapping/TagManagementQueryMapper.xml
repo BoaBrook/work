@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.tagmanagement.mapper.TagManagementQueryMapper">
+
+    <select id="selectTagPage" resultType="cn.stylefeng.guns.modular.tagmanagement.response.TagManagementListResponse">
+        SELECT
+            t.tag_id AS tagId,
+            t.tag_name AS tagName,
+            t.device_id AS deviceId,
+            t.model_id AS modelId,
+            t.subsystem_type AS subsystemType,
+            t.x_coordinate AS xCoordinate,
+            t.y_coordinate AS yCoordinate,
+            t.z_coordinate AS zCoordinate,
+            t.longitude AS longitude,
+            t.latitude AS latitude,
+            t.height AS height,
+            m.model_name AS modelName,
+            m.model_address AS modelAddress,
+            m.model_file_id AS modelFileId,
+            m.position AS position,
+            s.station_id AS belongStationId,
+            s.station_name AS belongStationName,
+            s.belong_pipeline AS belongPipeline,
+            p.pipeline_name AS belongPipelineName,
+            s.belong_operation_area AS belongOperationArea,
+            o.org_name AS belongOperationAreaName
+        FROM t_tag_management t
+        LEFT JOIN t_model_map_management m ON t.model_id = m.model_id
+        LEFT JOIN t_station_base_info s ON m.belong_station_valve_chamber_id = s.station_id
+        LEFT JOIN t_pipeline_base_info p ON s.belong_pipeline = p.pipeline_id
+        LEFT JOIN sys_hr_organization o ON CAST(o.org_id AS VARCHAR) = s.belong_operation_area
+        <where>
+            <if test="req != null and req.tagName != null and req.tagName != ''">
+                AND t.tag_name LIKE CONCAT('%', #{req.tagName}, '%')
+            </if>
+            <if test="req != null and req.belongOperationArea != null and req.belongOperationArea != ''">
+                AND s.belong_operation_area = #{req.belongOperationArea}
+            </if>
+            <if test="req != null and req.belongStationId != null and req.belongStationId != ''">
+                AND s.station_id = #{req.belongStationId}
+            </if>
+            <if test="req != null and req.belongPipeline != null and req.belongPipeline != ''">
+                AND s.belong_pipeline = #{req.belongPipeline}
+            </if>
+        </where>
+        ORDER BY t.create_time DESC, t.tag_id DESC
+    </select>
+
+</mapper>

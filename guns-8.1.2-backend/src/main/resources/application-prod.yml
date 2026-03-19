@@ -1,0 +1,93 @@
+# Mysql数据库
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://171.7.9.232:5432/pciis
+    username: postgres
+    password: cp@rzjd#2025
+
+    # 连接池大小根据实际情况调整
+    maxActive: 100
+    maxPoolPreparedStatementPerConnectionSize: 100
+  kafka:
+    bootstrap-servers: 171.7.4.231:9092,171.7.4.232:9092,171.7.4.235:9092
+    producer:
+      retries: 3
+    consumer:
+      group-id: pciis-consumer-group
+    properties:
+      security.protocol: SASL_PLAINTEXT
+      sasl.mechanism: PLAIN
+      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username='rzjd' password='r33UnFJEJKp4bMDY';
+
+
+node-system:
+  kafka:
+    app-id: rzjd
+    app-secret-key: ScZZntusJkEBaC4z
+    node-code: RZJD
+
+perimeter-intrusion:
+  configs:
+    - host: 171.7.98.11
+      port: 5000
+      apiKey: 6606700976c04825ae81b09288268cee
+    - host: 171.7.95.11
+      port: 5000
+      apiKey: 6606700976c04825ae81b09288268cee
+
+# 视频流媒体服务配置
+video-stream-media:
+  host: localhost
+  port: 8080
+  connect-timeout: 5000
+  read-timeout: 30000
+
+broadcast:
+  host: 171.7.4.1
+  port: 81
+  username: admin
+  password: Gb.123456
+
+devops:
+  serverHost: http://192.168.31.58:12909
+  project-unique-code: Y4JdNfsfS2tjAQouFm1t035IAnsjSKG3
+  project-interaction-secret-key: QBAttyH2ZkolwtkDcn0Y5b8HLGHEtOHC
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+sys:
+  config:
+    datimsien:
+      serviceBaseURL: http://171.7.9.231:8127
+      user: dms
+      password: datimsien_dms
+      websocketURL: ws://171.7.9.231:8127/datimsien_ws
+
+video:
+  zlmediakit:
+    server: http://localhost:80
+    app: live
+    vhost: __defaultVhost__
+    secret: hGqwJMifJloOX2ZFoqD9ZyhfM4wIIwc2
+    videoSavePath: /opt/media
+  livegbs:
+    server: http://171.7.9.231:10000
+    username: admin
+    password: admin123
+
+cas:
+  # CAS核心服务地址
+  server-url-prefix: http://171.7.4.234:8080/cas
+  # CAS登录页地址（拼接前缀）
+  server-login-url: ${cas.server-url-prefix}/login
+  # CAS票据验证接口地址
+  server-validate-url: ${cas.server-url-prefix}/p3/serviceValidate
+  # 子系统备案的service URL（需URL编码）
+  client-service-url: http://171.7.9.231:9580/cas/callback
+  # 协议配置（生产环境改为HTTPS）
+  protocol: CAS30
+  # 响应格式（默认XML，如需JSON添加format=json参数）
+  response-format: XML

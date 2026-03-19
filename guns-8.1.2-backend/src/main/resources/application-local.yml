@@ -1,0 +1,62 @@
+# Mysql数据库
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://192.168.99.85:5432/pciis
+#    username: postgres
+#    password: tazh_pgsql_2021
+    url: jdbc:postgresql://171.7.9.232:5432/pciis
+    username: postgres
+    password: cp@rzjd#2025
+    # 连接池大小根据实际情况调整
+    maxActive: 100
+    maxPoolPreparedStatementPerConnectionSize: 100
+  flyway:
+    enabled: false
+    locations: classpath:db/scripts/init
+  kafka:
+    bootstrap-servers: localhost:19092
+    producer:
+      retries: 3
+    consumer:
+      group-id: pciis-consumer-group
+
+node-system:
+  kafka:
+    app-id: app-id
+    app-secret-key: app-secret-key
+    node-code: RZJD
+
+perimeter-intrusion:
+  host: localhost
+  port: 9581
+
+# 视频流媒体服务配置
+video-stream-media:
+  host: localhost
+  port: 8080
+  connect-timeout: 5000
+  read-timeout: 30000
+
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 控制台打印完整SQL
+#  global-config:
+#    db-config:
+#      table-underline: true
+#    # SQL分析打印器（性能分析插件）
+#    sql-parser-cache: false
+
+cas:
+  # CAS服务器地址 http://171.7.4.234
+  server-url-prefix: http://171.7.4.234:8080/cas
+  # CAS服务器登录URL
+  server-login-url: ${cas.server-url-prefix}/login
+  # CAS服务器用户校验URL
+  server-valid-url: ${cas.server-url-prefix}/p3/serviceValidate
+  # CAS服务器登出URL
+  server-logout-url: ${cas.server-url-prefix}/logout
+  # 客户端地址，用于CAS服务器回调
+  client-host-url: http://localhost:${server.port}/cas/callback
+  # 验证类型
+  validation-type: CAS3

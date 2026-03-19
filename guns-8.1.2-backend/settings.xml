@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <!-- 使用此配置文件或修改本地默认配置文件仓库为公司私有仓库 -->
+    <servers>
+        <server>
+            <id>nexus-public</id>
+            <username>kifdev</username>
+            <password>Kif24680</password>
+        </server>
+        <server>
+            <id>nexus-releases</id>
+            <username>kifdev</username>
+            <password>Kif24680</password>
+        </server>
+        <server>
+            <id>nexus-snapshots</id>
+            <username>kifdev</username>
+            <password>Kif24680</password>
+        </server>
+    </servers>
+    
+    <mirrors>
+        <!-- HTTP blocker 已注释，允许访问 HTTP 协议的私有仓库 -->
+        <mirror>
+            <id>maven-default-http-blocker</id>
+            <mirrorOf>none</mirrorOf>
+            <url>http://0.0.0.0/</url>
+<!--            <blocked>true</blocked>-->
+        </mirror>
+    </mirrors>
+</settings>
