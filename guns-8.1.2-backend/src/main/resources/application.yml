@@ -1,0 +1,77 @@
+server:
+  port: 8080
+  max-http-header-size: 10240
+
+spring:
+  application:
+    name: guns
+  profiles:
+    active: @spring.active@
+  main:
+    allow-circular-references: true
+  mvc:
+    view:
+      prefix: /pages
+  servlet:
+    multipart:
+      max-request-size: 8GB
+      max-file-size: 8GB
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    locale: zh_CN
+    serialization:
+      indent_output: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration/mysql
+    # 当迁移时发现目标schema非空，而且带有没有元数据的表时，是否自动执行基准迁移
+    baseline-on-migrate: true
+    # 是否允许无序的迁移 开发环境最好开启, 生产环境关闭
+    out-of-order: true
+    # 关闭占位符替换，因为插入的sql里边可能包含${}关键字
+    placeholder-replacement: false
+
+# 资源扫描
+scanner:
+  open: true
+  entity-scan-package: cn.stylefeng
+
+mybatis-plus:
+  mapper-locations: classpath*:cn/stylefeng/**/mapping/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    lazy-loading-enabled: true
+    multiple-result-sets-enabled: true
+  global-config:
+    banner: false
+    enable-sql-runner: true
+    db-config:
+      id-type: assign_id
+      table-underline: true
+      logic-delete-field: del_flag
+      logic-delete-value: Y
+      logic-not-delete-value: N
+
+# 单点登录开关
+sso:
+  openFlag: false
+  sso-client-type: server
+
+# 登录时，密码对称加密的秘钥
+# 可以用如下代码，从新生成秘钥对：
+# RSA rsa = new RSA();rsa.getPublicKeyBase64();rsa.getPrivateKeyBase64();
+guns:
+  password:
+    rsa:
+      public-key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCxxzVjoPE53qyncOKJ4MmRGx3+NAnBXUgDqSRK96PgaY369GYHj9Q9xb2OdgIaJxZwe4ka54Uj544s6RhDzdv7BovMuJ8ekKe0BfwGCgbfu8d8KGi1tmCBrOejpp7IyvQtLrnfChVwhoejDkR/6eyBn94nkS1sWQerjuz0amNdzQIDAQAB
+      private-key: MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBALHHNWOg8TnerKdw4ongyZEbHf40CcFdSAOpJEr3o+Bpjfr0ZgeP1D3FvY52AhonFnB7iRrnhSPnjizpGEPN2/sGi8y4nx6Qp7QF/AYKBt+7x3woaLW2YIGs56OmnsjK9C0uud8KFXCGh6MORH/p7IGf3ieRLWxZB6uO7PRqY13NAgMBAAECgYAZyaZGcemb9d+AmGDcFDXY7SCQJ7dEi8Xu9gGUOFDWtCkKvpnwPd5RKZZiDF8osQPRxDGyq+PFvgiDHjrNVxayGJeAJPMX2QQjyaBmJRrt9UKOdejB008JS+KpZrSL4h3zUSmmaDTqMs3SGbMA+/XIRb19tw4L/LFFZ/iZWA/rYQJBAOGcNby+EHMvlUscOJZS9QgEbUfmbCoZMaS/rbeBqoT2dOB9xus/OvNFP0eDS3hc6uJj5kMCDRrd7INTrMHgR/0CQQDJuZdEm5juTbLixyRMNaG/ICVBgEnJ3mh40/K4OHLhNsi+IBmGTXQEfroECsv11CTGuHZQURJJc+tdI7MdJc4RAkA8gG6swe+ZZC5OKTBHp9GMJ9vCh1mEZKM6giis6Hn5FDq9pR0+IwPFD1Hr9Jq9mXVn5tBuMdOf29m8UiknCOVlAkBtCHpho/SKQccB2n+dDZQKeTaJ6+x2R1eSj4Tu29wELRdd5H3HYM/nqhOjIa7ShcMHAic5DEjlGNnLswMaKxfxAkAE8bwO8oz7yqfg76rIXCrwoHUXpBPzMK+lpHn+E5joXsSpm34ZnY23HhRZMIcj8TX1ACXKp1+mJ5BcWnq5Tg6f
+
+# 涉及到租户相关的业务表
+tenant:
+  business-table-list:
+    - sys_hr_organization
+    - sys_hr_position
+    - sys_user
+    - sys_role
